@@ -12,22 +12,17 @@ import aiohttp
 import time
 
 '''
-
     1.单线程获取当前页每一章图片的详情页链接
     2.单线程获取一章图片尾页，并获取每页图片
     3.单线程保存图片
     4.获取当前类别每页链接，然后和1.串起来
     5.多线程运行步骤2，速度提升，但还是有点慢，且步骤1耗时较长
     6.采取异步协程方法运行步骤1，速度明显提升，从21秒变为2秒！
-    7.复制出去，全程采用异步，初测发现，只下载10个图集时，多线程10线程耗时112秒，异步76秒.下载100个图集时多线程耗时151秒，测试异步时网站崩了，但结果可想而知，要慢很多！
-        但此时的异步只是在download_jpg函数采取异步，download函数只能用单线程调用，不知道可不可以多线程中嵌套异步，但在测试中程序运行几秒就停止了，可能还是操作不到位
-    8.我将download_jpg函数写入main函数中进行异步调用，产生一种异步嵌套异步的效果，下载10图集仅用27秒.但只要图集一多程序就崩，还是多线程下靠谱！！
-
 '''
 
+savepath = r''      # 这里写你的保存路径，最好创个文件夹，把文件夹的路径写进来。所有图片都是下载在一个文件夹，想分图集的话自己改改。
 charturl = []
 # charturl = ['https://www.umeitu.com//meinvtupian/siwameinv/27174.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27175.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27176.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27177.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27178.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27179.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27180.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27181.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/20928.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/20938.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27182.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27183.htm', 'https://www.umeitu.com//meinvtupian/siwameinv/27184.htm']
-
 baseurl = 'https://www.umeitu.com/'
 re_totalpage = re.compile('下一页</a>.*;<a href="(.*?).htm">尾页</a>')
 
@@ -58,7 +53,7 @@ def download(i):
         else:
             page = '_' + str(j + 1)
         jqg_pageurl = baseurl + mid_url + page + '.htm'
-        path = f'/下载/picture/{i}_{j}.jpg'
+        path = savepath + f'/{i}_{j}.jpg'
         download_jpg(jqg_pageurl, path)
     jdt.update()
 
