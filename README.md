@@ -1,5 +1,5 @@
 # python_code
-## 用python写的一些小爬虫。用到多线程，异步，xpath，beautifulsoup，requests，re等
+## python爬虫练习~ 用python写的一些小爬虫。用到多线程，异步，xpath，beautifulsoup，requests，re等
 ### 优美图库
 可爬取优美图库用一个类别下所有图片。链接在代码里自取
 
