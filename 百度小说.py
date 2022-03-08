@@ -2,6 +2,11 @@ import requests
 from concurrent.futures import ThreadPoolExecutor
 from tqdm import tqdm
 
+
+'''
+    测试过，付费的下不了，就写着玩玩
+'''
+
 # https://dushu.baidu.com/pc/detail?gid=4306063500
 # https://dushu.baidu.com/api/pc/getCatalog?data={%22book_id%22:%224306063500%22}
 # https://dushu.baidu.com/api/pc/getChapterContent?data={%22book_id%22:%224306063500%22,%22cid%22:%224306063500|1569782244%22,%22need_bookinfo%22:1}
@@ -33,7 +38,7 @@ def getChapterContent(c_id,tit,i):        # 获取章节内容并保存
     jdt.update()
     # print(tit + 'OK！')
 
-def main():     # 线程池下载函数
+def main():     # 主函数
     getCatalog()
     global jdt
     jdt = tqdm(total=len(title))
@@ -41,7 +46,7 @@ def main():     # 线程池下载函数
         for i in range(len(title)):
             t.submit(getChapterContent, c_id=cid[i], tit=title[i], i=i)
 
-def zh():
+def zh():       # 分章节下载完成后进行整合
     for i in range(len(title)):
         with open('./xs/' + str(i+1) + title[i] + '.txt', 'r', encoding='utf-8') as f1:
             with open('小说.txt', 'a', encoding='utf-8') as f2:
